@@ -20,8 +20,8 @@ with app.app_context():
 
 jwt = JWTManager(app)
 
-app.register_blueprint(todo_items_bp, url_prefix='/todo')
-app.register_blueprint(user_bp)
+app.register_blueprint(todo_items_bp, url_prefix='/api/todo')
+app.register_blueprint(user_bp, url_prefix='/api')
 
 
 @jwt.token_in_blocklist_loader

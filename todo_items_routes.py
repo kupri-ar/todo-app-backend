@@ -11,9 +11,9 @@ def create_item():
     """Add new Item"""
 
     body = request.get_json()
-    crud.create_todo_item(body)
+    result = crud.create_todo_item(body)
 
-    return 'CREATED', 201
+    return result, 201
 
 
 @todo_items_bp.route('/', methods=['GET'])
@@ -34,6 +34,6 @@ def update_todo_item():
     """Update Item"""
 
     body = request.get_json()
-    crud.update_todo_item(body)
+    result = crud.update_todo_item(body)
 
-    return 'OK', 200
+    return result, 200

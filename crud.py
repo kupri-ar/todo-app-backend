@@ -6,8 +6,11 @@ from schemas import TodoItemSchema
 
 
 def create_todo_item(payload):
-    TodoItemSchema().load(payload, session=db.session)
+    new_todo_item = TodoItemSchema().load(payload, session=db.session)
+    db.session.add(new_todo_item)
     db.session.commit()
+
+    return TodoItemSchema().dump(new_todo_item)
 
 
 def get_todo_items_with_paginate(page, per_page, order_by, desc_order):
@@ -38,7 +41,9 @@ def get_todo_items_with_paginate(page, per_page, order_by, desc_order):
         "X-Pagination-Current-Page": page,
         "X-Pagination-Per-Page": per_page,
         "X-Pagination-Total-Count": result.total,
-        'X-Pagination-Page-Count': result.pages
+        'X-Pagination-Page-Count': result.pages,
+        'Access-Control-Expose-Headers': 'X-Pagination-Current-Page, X-Pagination-Per-Page, '
+                                         'X-Pagination-Total-Count, X-Pagination-Page-Count'
     }
 
     return response_data, response_headers
@@ -59,3 +64,5 @@ def update_todo_item(payload):
 
     todo_item.edited_by_admin = True
     db.session.commit()
+
+    return TodoItemSchema().dump(todo_item)
