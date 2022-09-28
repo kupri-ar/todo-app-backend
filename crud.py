@@ -57,12 +57,16 @@ def update_todo_item(payload):
 
     existing = db.session.query(TodoItem).where(TodoItem.id == todo_item_id).first()
 
+    old_content = existing.content
+
     if not existing:
         raise NotFoundException()
 
     todo_item = TodoItemSchema().load(payload, session=db.session, partial=True, instance=existing)
 
-    todo_item.edited_by_admin = True
+    if old_content != todo_item.content:
+        todo_item.edited_by_admin = True
+
     db.session.commit()
 
     return TodoItemSchema().dump(todo_item)

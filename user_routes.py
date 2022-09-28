@@ -14,7 +14,7 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
     if username != "admin" or password != "123":
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Bad username or password"}), 400
 
     access_token = create_access_token(identity=username)
 
